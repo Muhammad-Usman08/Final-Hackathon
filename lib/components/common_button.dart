@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:hackhthon_project/components/custom_text.dart';
-import 'package:hackhthon_project/utils/constants.dart';
 
 class CommonButton extends StatelessWidget {
   final String title;
@@ -12,8 +11,8 @@ class CommonButton extends StatelessWidget {
   final Widget? icon;
   final double fontSize;
   final bool isLoading;
-  final double horizontalPadding,
-      vertcalPaddingM; // verticalPaddingM spelling fix
+  final double horizontalPadding;
+  final double vertcalPaddingM;
 
   CommonButton({
     super.key,
@@ -24,7 +23,7 @@ class CommonButton extends StatelessWidget {
     this.textColor = Colors.white,
     this.icon,
     this.horizontalPadding = 0,
-    this.vertcalPaddingM = 10, // vertical padding
+    this.vertcalPaddingM = 10,
     this.fontSize = 15,
     this.isEnabled = true,
     this.isLoading = false,
@@ -37,26 +36,20 @@ class CommonButton extends StatelessWidget {
       child: Container(
         width: horizontalPadding > 0 ? null : double.infinity,
         padding: EdgeInsets.symmetric(
-          vertical: vertcalPaddingM, // Use vertcalPaddingM here
+          vertical: vertcalPaddingM,
           horizontal: horizontalPadding,
         ),
         decoration: BoxDecoration(
-          color: !isEnabled
-              ? Colors.grey[400]
-              : isTransparent
-                  ? bgColor
-                  : bgColor ??
-                      const Color(
-                          themeColor), // Use bgColor if provided, otherwise default color
-          borderRadius: BorderRadius.circular(15),
-          boxShadow: [
-            BoxShadow(
-              color: Color(themeColor).withOpacity(0.3),
-              spreadRadius: 3,
-              blurRadius: 10,
-              offset: Offset(0, 5),
-            )
-          ],
+          // Check if a background color is provided, otherwise use a default gradient
+          color: bgColor != null && !isTransparent ? bgColor : null,
+          gradient: (bgColor == null && !isTransparent)
+              ? const LinearGradient(
+                  colors: [Color(0xff392776), Color.fromARGB(255, 8, 51, 143)],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                )
+              : null,
+          borderRadius: BorderRadius.circular(10),
         ),
         child: isLoading
             ? const Center(
@@ -75,7 +68,7 @@ class CommonButton extends StatelessWidget {
                 children: [
                   if (icon != null) ...[
                     icon!,
-                    SizedBox(width: 20),
+                    const SizedBox(width: 20),
                   ],
                   CustomText(
                     text: title,
