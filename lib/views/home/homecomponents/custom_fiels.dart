@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
+import 'package:hackhthon_project/views/home/homeview_model.dart';
 
 class CustomToggleSwitch extends StatelessWidget {
   const CustomToggleSwitch({Key? key}) : super(key: key);
@@ -11,11 +12,11 @@ class CustomToggleSwitch extends StatelessWidget {
 
     return Obx(() {
       return Container(
-        padding: EdgeInsets.all(8),
+        padding: const EdgeInsets.all(8),
         decoration: BoxDecoration(
           border: Border.all(color: Colors.white38),
           borderRadius: BorderRadius.circular(15),
-          color: Color(0xff151232),
+          color: const Color(0xff151232),
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -23,16 +24,16 @@ class CustomToggleSwitch extends StatelessWidget {
             // Walk-in option
             GestureDetector(
               onTap: () {
-                homeController.isWalking.value = true; // Set to Walk-in
+                homeController.isWalking.value = true;
               },
               child: AnimatedContainer(
-                duration: Duration(milliseconds: 300),
-                padding: EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+                duration: const Duration(milliseconds: 300),
+                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
                 decoration: BoxDecoration(
                   gradient: homeController.isWalking.value
-                      ? LinearGradient(
+                      ? const LinearGradient(
                           colors: [
-                            const Color.fromARGB(255, 36, 157, 214),
+                            Color.fromARGB(255, 36, 157, 214),
                             Color(0xff392776),
                             Color(0xff151232),
                           ],
@@ -50,7 +51,6 @@ class CustomToggleSwitch extends StatelessWidget {
                           ? Colors.white
                           : Colors.white38,
                     ),
-                    SizedBox(width: 10),
                   ],
                 ),
               ),
@@ -58,16 +58,16 @@ class CustomToggleSwitch extends StatelessWidget {
             // Cycle option
             GestureDetector(
               onTap: () {
-                homeController.isWalking.value = false; // Set to Cycle
+                homeController.isWalking.value = false;
               },
               child: AnimatedContainer(
-                duration: Duration(milliseconds: 300),
-                padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                duration: const Duration(milliseconds: 300),
+                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
                 decoration: BoxDecoration(
                   gradient: !homeController.isWalking.value
-                      ? LinearGradient(
+                      ? const LinearGradient(
                           colors: [
-                            const Color.fromARGB(255, 36, 157, 214),
+                            Color.fromARGB(255, 36, 157, 214),
                             Color(0xff392776),
                             Color(0xff151232),
                           ],
@@ -85,7 +85,6 @@ class CustomToggleSwitch extends StatelessWidget {
                           ? Colors.white
                           : Colors.white38,
                     ),
-                    SizedBox(width: 10),
                   ],
                 ),
               ),
@@ -95,8 +94,4 @@ class CustomToggleSwitch extends StatelessWidget {
       );
     });
   }
-}
-
-class HomeviewModel extends GetxController {
-  RxBool isWalking = true.obs; // Default to Walk-in
 }

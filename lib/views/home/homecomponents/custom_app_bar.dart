@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:hackhthon_project/components/custom_text.dart';
-import 'package:hackhthon_project/views/home/home_view.dart';
 import 'package:hackhthon_project/views/home/homecomponents/custom_fiels.dart';
 
 class CustomAppBar extends StatelessWidget {
@@ -9,8 +8,8 @@ class CustomAppBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.all(25),
-      child: Row(
+      padding: const EdgeInsets.all(25),
+      child: const Row(
         children: [
           Icon(
             Icons.menu,

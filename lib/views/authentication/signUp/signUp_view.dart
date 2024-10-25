@@ -51,13 +51,13 @@ class SignupView extends StatelessWidget {
                   Container(
                     padding: const EdgeInsets.all(20),
                     decoration: BoxDecoration(
-                      color: const Color.fromARGB(29, 16, 45, 1),
+                      color: Color(0xff1d102d),
                       borderRadius: BorderRadius.circular(15),
                     ),
                     child: Column(
                       children: [
                         const Text(
-                          'Login',
+                          'Signup',
                           style: TextStyle(
                               fontSize: 24,
                               fontWeight: FontWeight.bold,
@@ -69,7 +69,7 @@ class SignupView extends StatelessWidget {
                             hintText: "Enter Your Name",
                             hintStyle: TextStyle(color: Colors.white),
                             prefixIcon: Icon(
-                              Icons.contact_mail,
+                              Icons.person,
                               color: Colors.white,
                             ),
                             border: OutlineInputBorder(
@@ -99,10 +99,6 @@ class SignupView extends StatelessWidget {
                             hintStyle: TextStyle(color: Colors.white),
                             prefixIcon: Icon(
                               Icons.lock,
-                              color: Colors.white,
-                            ),
-                            suffixIcon: Icon(
-                              Icons.remove_red_eye,
                               color: Colors.white,
                             ),
                             border: OutlineInputBorder(
@@ -141,10 +137,9 @@ class SignupView extends StatelessWidget {
                             },
                             style: ElevatedButton.styleFrom(
                               minimumSize: Size(480, 50),
-                              backgroundColor: const Color.fromARGB(4, 5, 15,
-                                  0),
-                              shadowColor: const Color.fromARGB(
-                                  15, 85, 232, 1),
+                              backgroundColor:
+                                  const Color.fromARGB(4, 5, 15, 0),
+                              shadowColor: const Color.fromARGB(15, 85, 232, 1),
                             ),
                             child: Text(
                               'Create Account',
@@ -174,12 +169,7 @@ class SignupView extends StatelessWidget {
                   ),
                   InkWell(
                     onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => LoginView(),
-                        ),
-                      );
+                     Get.to(()=>LoginView());
                     },
                     child: const Text(
                       "Signup",

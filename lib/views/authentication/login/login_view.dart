@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:hackhthon_project/views/authentication/signUp/signUp_view.dart';
+import 'package:hackhthon_project/views/home/home_view.dart';
 
 class LoginView extends StatelessWidget {
   @override
@@ -47,7 +49,7 @@ class LoginView extends StatelessWidget {
                 Container(
                   padding: const EdgeInsets.all(20),
                   decoration: BoxDecoration(
-                    color: const Color.fromARGB(29, 16, 45, 1),
+                    color: const Color(0xff1d102d),
                     borderRadius: BorderRadius.circular(15),
                   ),
                   child: Column(
@@ -110,29 +112,23 @@ class LoginView extends StatelessWidget {
                                 Colors.blue,
                                 const Color.fromARGB(255, 38, 13, 139),
                                 Colors.blue,
-                              ], // Gradient colors
+                              ],
                               begin: Alignment.topCenter,
                               end: Alignment.bottomCenter),
-                          borderRadius:
-                              BorderRadius.circular(8), // Rounded corners
+                          borderRadius: BorderRadius.circular(8),
                         ),
                         child: ElevatedButton(
                           onPressed: () {
-                            // Get.to(HomePage());
-                            // Button action
+                            Get.to(HomeView());
                           },
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: const Color.fromARGB(4, 5, 15,
-                                0), // Make button background transparent
-                            shadowColor: const Color.fromARGB(
-                                15, 85, 232, 1), // Remove default shadow
-                            minimumSize: Size(480, 50), // Padding
+                            backgroundColor: const Color.fromARGB(4, 5, 15, 0),
+                            shadowColor: const Color.fromARGB(15, 85, 232, 1),
+                            minimumSize: Size(480, 50),
                           ),
                           child: Text(
                             'Login',
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 16), // Text style
+                            style: TextStyle(color: Colors.white, fontSize: 16),
                           ),
                         ),
                       ),
@@ -156,12 +152,7 @@ class LoginView extends StatelessWidget {
                 ),
                 InkWell(
                   onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => SignupView(),
-                      ),
-                    );
+                    Get.back();
                   },
                   child: const Text(
                     "REGISTER",

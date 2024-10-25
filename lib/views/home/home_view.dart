@@ -54,8 +54,8 @@ class HomeView extends StatelessWidget {
                           child: Column(
                             children: [
                               Container(
-                                height: 90,
-                                width: 80,
+                                height: 80,
+                                width: 75,
                                 decoration: BoxDecoration(
                                   border: Border.all(
                                       color: Colors.deepPurpleAccent),
@@ -81,7 +81,7 @@ class HomeView extends StatelessWidget {
                     ),
                   ),
                   SizedBox(
-                    height: 230,
+                    height: 210,
                     child: ListView.builder(
                       scrollDirection: Axis.horizontal,
                       itemCount: 3,
@@ -91,8 +91,8 @@ class HomeView extends StatelessWidget {
                             horizontal: 8.0,
                           ),
                           child: Container(
-                            height: 120,
-                            width: 360, // Set a fixed width to prevent overflow
+                            height: 80,
+                            width: 300,
                             decoration: BoxDecoration(
                               border:
                                   Border.all(color: Colors.deepPurpleAccent),
@@ -114,25 +114,25 @@ class HomeView extends StatelessWidget {
                                     children: [
                                       CustomText(
                                         text: '30% OFF',
-                                        fontSize: 30,
+                                        fontSize: 25,
                                         weight: FontWeight.bold,
                                         color: Colors.white,
                                       ),
                                       SizedBox(height: 10),
                                       CustomText(
-                                        fontSize: 20,
+                                        fontSize: 17,
                                         text:
                                             'Discover discounts in your\nfavorite local restaurants',
                                         color: Colors.white54,
                                       ),
-                                      SizedBox(height: 8),
+                                      SizedBox(height: 12),
                                       Container(
                                         height: 50,
-                                        width: 170,
+                                        width: 130,
                                         child: Center(
                                           child: CustomText(
                                             text: 'Order Now',
-                                            fontSize: 16,
+                                            fontSize: 14,
                                             weight: FontWeight.bold,
                                             color: Colors.white,
                                           ),
