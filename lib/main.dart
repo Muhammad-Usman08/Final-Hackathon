@@ -1,8 +1,16 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:hackhthon_project/firebase_options.dart';
 import 'package:hackhthon_project/views/authentication/signUp/signUp_view.dart';
+import 'package:hackhthon_project/views/menu_screen/menu_screen_view.dart';
+import 'package:hackhthon_project/views/resturantsview/resturant_view.dart';
 
-void main() {
+void main()async {
+   WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   runApp(const MyApp());
 }
 
@@ -12,7 +20,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
-      home: SignupView(),
+      home: MenuScreenView(),
       debugShowCheckedModeBanner: false,
     );
   }
