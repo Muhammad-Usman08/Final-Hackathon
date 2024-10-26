@@ -4,7 +4,6 @@ import 'package:get/get.dart';
 import 'package:hackhthon_project/components/common_button.dart';
 import 'package:hackhthon_project/components/custom_text.dart';
 import 'package:hackhthon_project/utils/constants.dart';
-import 'package:hackhthon_project/views/menu_screen/cart_model.dart';
 import 'package:hackhthon_project/views/order_detail/order_detail_viewmodel.dart'; // Ensure this is imported
 
 class OrderDetailView extends StatelessWidget {
@@ -68,7 +67,6 @@ class OrderDetailView extends StatelessWidget {
                         child: Container(
                           margin: const EdgeInsets.only(bottom: 15),
                           child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Container(
                                 width: MediaQuery.of(context).size.width * 0.22,
@@ -84,58 +82,62 @@ class OrderDetailView extends StatelessWidget {
                                   ),
                                 ),
                               ),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Obx(() => CustomText(
-                                        text:
-                                            "Rs ${item.price.value * item.quantity.value}", // Make sure this updates reactively
-                                        color: Colors.white,
-                                      )),
-                                  CustomText(
-                                    text: item.name,
-                                    color: Colors.white,
-                                  ),
-                                  const SizedBox(height: 10),
-                                  Container(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 15, vertical: 0),
-                                    decoration: BoxDecoration(
+                              Container(
+                                margin: EdgeInsets.only(left: 20),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Obx(() => CustomText(
+                                          text:
+                                              "Rs ${item.price.value * item.quantity.value}", // Make sure this updates reactively
+                                          color: Colors.white,
+                                        )),
+                                    CustomText(
+                                      text: item.name,
                                       color: Colors.white,
-                                      borderRadius: BorderRadius.circular(5),
                                     ),
-                                    child: Row(
-                                      children: [
-                                        InkWell(
-                                          onTap: () {
-                                            cartController.addQuantity(item);
-                                          },
-                                          child: const Text('+',
-                                              style: TextStyle(fontSize: 15)),
-                                        ),
-                                        Container(
-                                          margin: const EdgeInsets.symmetric(
-                                              horizontal: 15),
-                                          child: Obx(() => Text(
-                                                item.quantity.value.toString(),
-                                                style: const TextStyle(
-                                                    fontWeight:
-                                                        FontWeight.w600),
-                                              )),
-                                        ),
-                                        GestureDetector(
-                                          onTap: () {
-                                            cartController
-                                                .decreaseQuantity(item);
-                                          },
-                                          child: const Text('-',
-                                              style: TextStyle(fontSize: 22)),
-                                        ),
-                                      ],
-                                    ),
-                                  )
-                                ],
+                                    const SizedBox(height: 10),
+                                    Container(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 15, vertical: 0),
+                                      decoration: BoxDecoration(
+                                        color: Colors.white,
+                                        borderRadius: BorderRadius.circular(5),
+                                      ),
+                                      child: Row(
+                                        children: [
+                                          InkWell(
+                                            onTap: () {
+                                              cartController.addQuantity(item);
+                                            },
+                                            child: const Text('+',
+                                                style: TextStyle(fontSize: 15)),
+                                          ),
+                                          Container(
+                                            margin: const EdgeInsets.symmetric(
+                                                horizontal: 15),
+                                            child: Obx(() => Text(
+                                                  item.quantity.value.toString(),
+                                                  style: const TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.w600),
+                                                )),
+                                          ),
+                                          GestureDetector(
+                                            onTap: () {
+                                              cartController
+                                                  .decreaseQuantity(item);
+                                            },
+                                            child: const Text('-',
+                                                style: TextStyle(fontSize: 22)),
+                                          ),
+                                        ],
+                                      ),
+                                    )
+                                  ],
+                                ),
                               ),
+                              Spacer(),
                               GestureDetector(
                                 onTap: () {
                                   cartController.removeItem(item);
@@ -194,7 +196,7 @@ class OrderDetailView extends StatelessWidget {
                         child: CommonButton(
                           title: 'Checkout',
                           onPressed: () {
-                            // Add checkout functionality here
+                            cartController.addItemsToDatabase();
                           },
                         ),
                       ),

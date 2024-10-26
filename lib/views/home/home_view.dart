@@ -6,13 +6,16 @@ import 'package:hackhthon_project/views/home/homecomponents/custom_app_bar.dart'
 import 'package:hackhthon_project/views/home/homeview_model.dart';
 import 'package:hackhthon_project/views/home/product_model.dart';
 import 'package:hackhthon_project/views/menu_screen/menu_screen_view.dart';
+import 'package:hackhthon_project/views/order_detail/order_detail_viewmodel.dart';
+import 'package:hackhthon_project/views/resturantsview/resturant_view.dart';
 
 class HomeView extends StatelessWidget {
   const HomeView({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final HomeviewModel homeController = Get.put(HomeviewModel());
+    final HomeviewModel homeController = Get.put(HomeviewModel(), permanent: true);
+      final cartController = Get.put(CartController(), permanent: true);
 
     return Scaffold(
       body: SizedBox.expand(
@@ -56,29 +59,37 @@ class HomeView extends StatelessWidget {
                       scrollDirection: Axis.horizontal,
                       itemBuilder: (context, index) {
                         final data = categories[index];
-                        return Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 15),
-                          child: Column(
-                            children: [
-                              Container(
-                                height: 90,
-                                width: 80,
-                                decoration: BoxDecoration(
-                                  border: Border.all(
-                                      color: Colors.deepPurpleAccent),
-                                  color: const Color.fromARGB(255, 31, 7, 71),
-                                  borderRadius: BorderRadius.circular(10),
+                        return GestureDetector(
+                          onTap: () {
+                            Get.to(ResturantView(
+                              categoryData: homeController.products[index],
+                              restaurantData: data,
+                            ));
+                          },
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 15),
+                            child: Column(
+                              children: [
+                                Container(
+                                  height: 90,
+                                  width: 80,
+                                  decoration: BoxDecoration(
+                                    border: Border.all(
+                                        color: Colors.deepPurpleAccent),
+                                    color: const Color.fromARGB(255, 31, 7, 71),
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                  child: Image.asset('${data['icon']}'),
                                 ),
-                                child: Image.asset('${data['image']}'),
-                              ),
-                              const SizedBox(height: 8),
-                              CustomText(
-                                text: data['name'],
-                                color: Colors.white,
-                                weight: FontWeight.bold,
-                                fontSize: 20,
-                              ),
-                            ],
+                                const SizedBox(height: 8),
+                                CustomText(
+                                  text: data['name'],
+                                  color: Colors.white,
+                                  weight: FontWeight.bold,
+                                  fontSize: 20,
+                                ),
+                              ],
+                            ),
                           ),
                         );
                       },
@@ -105,7 +116,7 @@ class HomeView extends StatelessWidget {
                               gridDelegate:
                                   const SliverGridDelegateWithFixedCrossAxisCount(
                                 crossAxisCount: 2,
-                                childAspectRatio: 0.70,
+                                childAspectRatio: 0.73,
                                 crossAxisSpacing: 10.0,
                                 mainAxisSpacing: 10.0,
                               ),
@@ -138,8 +149,7 @@ class HomeView extends StatelessWidget {
                                             name: currentItem?.name ?? '',
                                             desc:
                                                 currentItem?.description ?? '',
-                                            price: (currentItem?.price ?? 0)
-                                                .toDouble(),
+                                            price: (currentItem?.price ?? 0),
                                           ));
                                     },
                                     child: Container(
@@ -182,7 +192,7 @@ class HomeView extends StatelessWidget {
                                                       'Unknown',
                                                   color: Colors.white,
                                                   weight: FontWeight.bold,
-                                                  fontSize: 19,
+                                                  fontSize: 17,
                                                 ),
                                                 CustomText(
                                                   text:

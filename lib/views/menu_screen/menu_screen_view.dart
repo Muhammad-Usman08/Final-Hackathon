@@ -13,7 +13,7 @@ class MenuScreenView extends StatelessWidget {
   final String image;
   final String name;
   final String desc;
-  final double price;
+  final int price;
   MenuScreenView(
       {super.key,
       required this.image,
@@ -22,14 +22,31 @@ class MenuScreenView extends StatelessWidget {
       required this.price});
 
   final controller = Get.put(MenuScreenViewmodel());
-  final controller1 = Get.put(CartController());
+  final cartController = Get.find<CartController>();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.black,
-        iconTheme: const IconThemeData(color: Colors.white),
+        automaticallyImplyLeading: false,
+        title: InkWell(
+          onTap: () {
+            Get.back();
+            controller.quantity.value = 1;
+          },
+          child: Container(
+            height: 50,
+            width: 60,
+            decoration: BoxDecoration(
+              border: Border.all(color: Colors.white10),
+              borderRadius: BorderRadius.circular(8),
+            ),
+            child: const Center(
+              child: Icon(Icons.arrow_back_ios, color: Colors.white),
+            ),
+          ),
+        ),
         actions: [
           GestureDetector(
             onTap: () {},
@@ -57,15 +74,18 @@ class MenuScreenView extends StatelessWidget {
           const SizedBox(width: 20),
         ],
       ),
-      body: SingleChildScrollView(
-        child: Container(
-          decoration: const BoxDecoration(
-            gradient: LinearGradient(
-              colors: [Colors.black, Color(0xff151232), Color(0xff392776)],
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-            ),
+      body: Container(
+        // Make the container fill the entire screen
+        width: double.infinity,
+        height: double.infinity,
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            colors: [Colors.black, Color(0xff151232), Color(0xff392776)],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
           ),
+        ),
+        child: SingleChildScrollView(
           child: Column(
             children: [
               Container(
@@ -77,13 +97,13 @@ class MenuScreenView extends StatelessWidget {
                   width: double.infinity,
                 ),
               ),
+              SizedBox(height: 20),
               Padding(
                 padding: const EdgeInsets.all(screenPadding),
                 child: Container(
                   width: double.infinity,
-                  // height: 50,
                   padding:
-                      const EdgeInsets.symmetric(horizontal: 15, vertical: 70),
+                      const EdgeInsets.symmetric(horizontal: 15, vertical: 20),
                   decoration: BoxDecoration(
                     border: Border.all(color: Colors.grey[700]!),
                     borderRadius: BorderRadius.circular(10),
@@ -99,7 +119,7 @@ class MenuScreenView extends StatelessWidget {
                       ),
                       SizedBox(height: 5),
                       CustomText(
-                        text: 'Rs ${price}',
+                        text: 'Rs $price',
                         color: Colors.white,
                         fontSize: 18,
                         weight: FontWeight.bold,
@@ -153,12 +173,15 @@ class MenuScreenView extends StatelessWidget {
         color: Colors.black,
         child: CommonButton(
           onPressed: () {
-            controller1.addItem(CartItem(
+            var item = CartItem(
+              name: name,
               price: price,
               image: image,
-              name: name,
-            ));
-            Get.snackbar("Success", "$name added to cart");
+              quantity: (controller.quantity.value),
+            );
+            cartController.addItem(item,
+                initialQuantity: controller.quantity.value);
+            controller.quantity.value = 1;
             Get.to(OrderDetailView());
           },
           title: 'Add to Basket',
