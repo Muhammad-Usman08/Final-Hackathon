@@ -1,13 +1,19 @@
 import 'package:flutter/material.dart';
-
+import 'package:get/get.dart';
 import 'package:hackhthon_project/components/custom_text.dart';
 import 'package:hackhthon_project/views/home/homecomponents/custom_app_bar.dart';
+import 'package:hackhthon_project/views/home/homeview_model.dart';
+import 'package:hackhthon_project/views/home/product_model.dart';
 
 class HomeView extends StatelessWidget {
   const HomeView({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final HomeviewModel homeController = Get.put(HomeviewModel());
+
+    homeController.fetchProducts();
+
     return Scaffold(
       body: SizedBox.expand(
         child: Container(
@@ -21,6 +27,7 @@ class HomeView extends StatelessWidget {
           ),
           child: SafeArea(
             child: SingleChildScrollView(
+              // Wrap entire content in a SingleChildScrollView
               child: Column(
                 children: [
                   CustomAppBar(),
@@ -54,8 +61,8 @@ class HomeView extends StatelessWidget {
                           child: Column(
                             children: [
                               Container(
-                                height: 80,
-                                width: 75,
+                                height: 90,
+                                width: 80,
                                 decoration: BoxDecoration(
                                   border: Border.all(
                                       color: Colors.deepPurpleAccent),
@@ -73,94 +80,103 @@ class HomeView extends StatelessWidget {
                                 color: Colors.white,
                                 weight: FontWeight.bold,
                                 fontSize: 20,
-                              )
+                              ),
                             ],
                           ),
                         );
                       },
                     ),
                   ),
-                  SizedBox(
-                    height: 210,
-                    child: ListView.builder(
-                      scrollDirection: Axis.horizontal,
-                      itemCount: 3,
-                      itemBuilder: (context, index) {
-                        return Padding(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 8.0,
-                          ),
-                          child: Container(
-                            height: 80,
-                            width: 300,
-                            decoration: BoxDecoration(
-                              border:
-                                  Border.all(color: Colors.deepPurpleAccent),
-                              color: const Color.fromARGB(255, 31, 7, 71),
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            child: Stack(
-                              children: [
-                                Positioned(
-                                  right: 2,
-                                  child: Image.asset('assets/images/Pasta.png'),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 25.0, vertical: 18),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      CustomText(
-                                        text: '30% OFF',
-                                        fontSize: 25,
-                                        weight: FontWeight.bold,
-                                        color: Colors.white,
+                  Obx(() {
+                    if (homeController.products.isEmpty) {
+                      return Center(child: CircularProgressIndicator());
+                    } else {
+                      return GridView.builder(
+                        physics:
+                            NeverScrollableScrollPhysics(), // Disable scrolling for the GridView
+                        shrinkWrap:
+                            true, // Allow the GridView to take only the needed space
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 2, // Number of columns
+                          childAspectRatio: 0.75, // Aspect ratio of each item
+                          crossAxisSpacing: 10.0,
+                          mainAxisSpacing: 10.0,
+                        ),
+                        itemCount: homeController.products.fold<int>(
+                          0,
+                          (sum, product) => sum + (product.items?.length ?? 0),
+                        ),
+                        itemBuilder: (context, index) {
+                          int currentIndex = 0;
+                          Items? currentItem;
+
+                          for (var product in homeController.products) {
+                            if (currentIndex + (product.items?.length ?? 0) >
+                                index) {
+                              currentItem =
+                                  product.items![index - currentIndex];
+                              break;
+                            }
+                            currentIndex += product.items?.length ?? 0;
+                          }
+
+                          return Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Container(
+                              decoration: BoxDecoration(
+                                border:
+                                    Border.all(color: Colors.deepPurpleAccent),
+                                color: const Color.fromARGB(255, 31, 7, 71),
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  if (currentItem != null)
+                                    ClipRRect(
+                                      borderRadius: BorderRadius.circular(12),
+                                      child: Image.network(
+                                        currentItem.image ?? '',
+                                        height: 130,
+                                        width: double.infinity,
+                                        fit: BoxFit.cover,
+                                        errorBuilder:
+                                            (context, error, stackTrace) {
+                                          return Center(
+                                              child: Icon(Icons.error,
+                                                  color: Colors.red));
+                                        },
                                       ),
-                                      SizedBox(height: 10),
-                                      CustomText(
-                                        fontSize: 17,
-                                        text:
-                                            'Discover discounts in your\nfavorite local restaurants',
-                                        color: Colors.white54,
-                                      ),
-                                      SizedBox(height: 12),
-                                      Container(
-                                        height: 50,
-                                        width: 130,
-                                        child: Center(
-                                          child: CustomText(
-                                            text: 'Order Now',
-                                            fontSize: 14,
-                                            weight: FontWeight.bold,
-                                            color: Colors.white,
-                                          ),
+                                    ),
+                                  Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        CustomText(
+                                          text: currentItem?.name ?? 'Unknown',
+                                          color: Colors.white,
+                                          weight: FontWeight.bold,
+                                          fontSize: 25,
                                         ),
-                                        decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(12),
-                                          gradient: LinearGradient(
-                                            colors: [
-                                              Color.fromARGB(255, 36, 157, 214),
-                                              Color(0xff392776),
-                                              Color(0xff151232),
-                                            ],
-                                            begin: Alignment.topRight,
-                                            end: Alignment.bottomLeft,
-                                          ),
+                                        CustomText(
+                                          text:
+                                              'Rs: ${currentItem?.price ?? '0'}',
+                                          color: Colors.white54,
                                         ),
-                                      ),
-                                    ],
+                                      ],
+                                    ),
                                   ),
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
-                          ),
-                        );
-                      },
-                    ),
-                  ),
+                          );
+                        },
+                      );
+                    }
+                  }),
+                  SizedBox(height: 10),
                 ],
               ),
             ),
