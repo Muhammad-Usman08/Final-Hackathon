@@ -7,7 +7,16 @@ import 'package:hackhthon_project/utils/constants.dart';
 import 'package:hackhthon_project/views/menu_screen/menu_screen_viewmodel.dart';
 
 class MenuScreenView extends StatelessWidget {
-  MenuScreenView({super.key});
+  final String image;
+  final String name;
+  final String desc;
+  final double price;
+  MenuScreenView(
+      {super.key,
+      required this.image,
+      required this.name,
+      required this.desc,
+      required this.price});
 
   final controller = Get.put(MenuScreenViewmodel());
   @override
@@ -40,7 +49,7 @@ class MenuScreenView extends StatelessWidget {
               child: SvgPicture.asset('assets/svg-icons/dots.svg'),
             ),
           ),
-         const SizedBox(width: 20),
+          const SizedBox(width: 20),
         ],
       ),
       body: SingleChildScrollView(
@@ -57,8 +66,8 @@ class MenuScreenView extends StatelessWidget {
               Container(
                 height: 200,
                 color: Colors.black,
-                child: Image.asset(
-                  'assets/images/nuddles.png',
+                child: Image.network(
+                  image,
                   fit: BoxFit.cover,
                   width: double.infinity,
                 ),
@@ -69,7 +78,7 @@ class MenuScreenView extends StatelessWidget {
                   width: double.infinity,
                   // height: 50,
                   padding:
-                      const EdgeInsets.symmetric(horizontal: 15, vertical: 20),
+                      const EdgeInsets.symmetric(horizontal: 15, vertical: 70),
                   decoration: BoxDecoration(
                     border: Border.all(color: Colors.grey[700]!),
                     borderRadius: BorderRadius.circular(10),
@@ -78,23 +87,20 @@ class MenuScreenView extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       CustomText(
-                        text: 'Udon Miso ',
+                        text: name,
                         color: Colors.white,
                         fontSize: 20,
                         weight: FontWeight.bold,
                       ),
                       SizedBox(height: 5),
                       CustomText(
-                        text: 'Rs 16.00 ',
+                        text: 'Rs ${price}',
                         color: Colors.white,
                         fontSize: 18,
                         weight: FontWeight.bold,
                       ),
                       SizedBox(height: 10),
-                      CustomText(
-                          text:
-                              'Our Udon Miso is a comforting bowl of thick, handmade udon noodles in a rich miso broth, garnished with tofu, spring onions, and vegetables.',
-                          color: Colors.grey[500]),
+                      CustomText(text: desc, color: Colors.grey[500]),
                       const SizedBox(height: 20),
                       Container(
                         width: 110,
@@ -114,7 +120,9 @@ class MenuScreenView extends StatelessWidget {
                                   color: Colors.white,
                                   size: 15,
                                 )),
-                            Obx(()=> CustomText(text: controller.quantity.value.toString(), color: Colors.white)),
+                            Obx(() => CustomText(
+                                text: controller.quantity.value.toString(),
+                                color: Colors.white)),
                             const SizedBox(width: 3),
                             IconButton(
                                 onPressed: () {
@@ -132,68 +140,15 @@ class MenuScreenView extends StatelessWidget {
                   ),
                 ),
               ),
-            const  Divider(),
-              Padding(
-                padding: EdgeInsets.all(screenPadding),
-                child: Column(
-                  children: [
-                    Row(
-                      children: [
-                       const CustomText(
-                          text: 'Noodle Type',
-                          color: Colors.white,
-                          weight: FontWeight.bold,
-                          fontSize: 18,
-                        ),
-                       const Spacer(),
-                        Container(
-                          padding:
-                             const EdgeInsets.symmetric(horizontal: 10, vertical: 3),
-                          decoration: BoxDecoration(
-                            border: Border.all(color: Colors.grey[800]!),
-                            borderRadius: BorderRadius.circular(15),
-                          ),
-                          child:const CustomText(
-                            text: 'Required',
-                            color: Colors.grey,
-                            fontSize: 13,
-                          ),
-                        )
-                      ],
-                    ),
-                    Row(
-                      children: [
-                        CustomText(
-                            text: 'Udon', color: Colors.grey, fontSize: 15),
-                        Spacer(),
-                        Obx(() {
-                          return Checkbox(
-                            value: controller.udonChecked.value,
-                            onChanged: (value) =>
-                                controller.udonChecked.value = value ?? false,
-                            activeColor:const Color(0xff392776),
-                            checkColor: Colors.white,
-                            shape: RoundedRectangleBorder(
-                              borderRadius:
-                                  BorderRadius.circular(5), // Rounded edges
-                            ),
-                            side: BorderSide(
-                              color: Colors.grey[700]!,
-                            ),
-                          );
-                        }),
-                      ],
-                    )
-                  ],
-                ),
-              ),
             ],
           ),
         ),
       ),
       bottomNavigationBar: BottomAppBar(
         color: Colors.black,
-        child: CommonButton(title: 'Add to Basket',),
+        child: CommonButton(
+          title: 'Add to Basket',
+        ),
       ),
     );
   }

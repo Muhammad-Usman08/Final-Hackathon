@@ -5,7 +5,7 @@ import 'package:hackhthon_project/views/home/categories_list.dart';
 import 'package:hackhthon_project/views/home/homecomponents/custom_app_bar.dart';
 import 'package:hackhthon_project/views/home/homeview_model.dart';
 import 'package:hackhthon_project/views/home/product_model.dart';
-import 'package:hackhthon_project/views/resturantsview/resturant_view.dart';
+import 'package:hackhthon_project/views/menu_screen/menu_screen_view.dart';
 
 class HomeView extends StatelessWidget {
   const HomeView({super.key});
@@ -13,8 +13,6 @@ class HomeView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final HomeviewModel homeController = Get.put(HomeviewModel());
-
-    homeController.fetchProducts();
 
     return Scaffold(
       body: SizedBox.expand(
@@ -29,7 +27,6 @@ class HomeView extends StatelessWidget {
           ),
           child: SafeArea(
             child: SingleChildScrollView(
-              // Wrap entire content in a SingleChildScrollView
               child: Column(
                 children: [
                   const CustomAppBar(),
@@ -59,131 +56,154 @@ class HomeView extends StatelessWidget {
                       scrollDirection: Axis.horizontal,
                       itemBuilder: (context, index) {
                         final data = categories[index];
-                        return GestureDetector(
-                          onTap: (){
-                            Get.to(ResturantView(restaurantData: categories[index],categoryData: homeController.products[index],));
-                          },
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 15),
-                            child: Column(
-                              children: [
-                                Container(
-                                  height: 90,
-                                  width: 80,
-                                  decoration: BoxDecoration(
-                                    border: Border.all(
-                                        color: Colors.deepPurpleAccent),
-                                    color: const Color.fromARGB(255, 31, 7, 71),
-                                    borderRadius: BorderRadius.circular(10),
-                                  ),
-                                  child: Image.asset('${data['icon']}'),
+                        return Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 15),
+                          child: Column(
+                            children: [
+                              Container(
+                                height: 90,
+                                width: 80,
+                                decoration: BoxDecoration(
+                                  border: Border.all(
+                                      color: Colors.deepPurpleAccent),
+                                  color: const Color.fromARGB(255, 31, 7, 71),
+                                  borderRadius: BorderRadius.circular(10),
                                 ),
-                                const SizedBox(height: 8),
-                                 CustomText(
-                                  text: data['name'],
-                                  color: Colors.white,
-                                  weight: FontWeight.bold,
-                                  fontSize: 18,
-                                ),
-                              ],
-                            ),
+                                child: Image.asset('${data['image']}'),
+                              ),
+                              const SizedBox(height: 8),
+                              CustomText(
+                                text: data['name'],
+                                color: Colors.white,
+                                weight: FontWeight.bold,
+                                fontSize: 20,
+                              ),
+                            ],
                           ),
                         );
                       },
                     ),
                   ),
-                  Obx(() {
-                    if (homeController.products.isEmpty) {
-                      return const Center(
-                          child: CircularProgressIndicator(
-                        color: Colors.white,
-                      ));
-                    } else {
-                      return GridView.builder(
-                        physics:
-                            const NeverScrollableScrollPhysics(),
-                        shrinkWrap:
-                            true,
-                        gridDelegate:const SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 2,
-                          childAspectRatio: 0.70, // Aspect ratio of each item
-                          crossAxisSpacing: 10.0,
-                          mainAxisSpacing: 10.0,
-                        ),
-                        itemCount: homeController.products.fold<int>(
-                          0,
-                          (sum, product) => sum + (product.items?.length ?? 0),
-                        ),
-                        itemBuilder: (context, index) {
-                          int currentIndex = 0;
-                          Items? currentItem;
-
-                          for (var product in homeController.products) {
-                            if (currentIndex + (product.items?.length ?? 0) >
-                                index) {
-                              currentItem =
-                                  product.items![index - currentIndex];
-                              break;
-                            }
-                            currentIndex += product.items?.length ?? 0;
-                          }
-
-                          return Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Container(
-                              decoration: BoxDecoration(
-                                border:
-                                    Border.all(color: Colors.deepPurpleAccent),
-                                color: const Color.fromARGB(255, 31, 7, 71),
-                                borderRadius: BorderRadius.circular(12),
+                  FutureBuilder(
+                    future: homeController.fetchProducts(),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return const Center(
+                            child:
+                                CircularProgressIndicator(color: Colors.white));
+                      } else if (snapshot.hasError) {
+                        return Center(child: Text('Error: ${snapshot.error}'));
+                      } else {
+                        return Obx(() {
+                          if (homeController.products.isEmpty) {
+                            return const Center(
+                                child: Text('No products found.'));
+                          } else {
+                            return GridView.builder(
+                              physics: const NeverScrollableScrollPhysics(),
+                              shrinkWrap: true,
+                              gridDelegate:
+                                  const SliverGridDelegateWithFixedCrossAxisCount(
+                                crossAxisCount: 2,
+                                childAspectRatio: 0.70,
+                                crossAxisSpacing: 10.0,
+                                mainAxisSpacing: 10.0,
                               ),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  if (currentItem != null)
-                                    ClipRRect(
-                                      borderRadius: BorderRadius.circular(12),
-                                      child: Image.network(
-                                        currentItem.image ?? '',
-                                        height: 130,
-                                        width: double.infinity,
-                                        fit: BoxFit.cover,
-                                        errorBuilder:
-                                            (context, error, stackTrace) {
-                                          return const Center(
-                                              child: Icon(Icons.error,
-                                                  color: Colors.red));
-                                        },
+                              itemCount: homeController.products.fold<int>(
+                                0,
+                                (sum, product) =>
+                                    sum + (product.items?.length ?? 0),
+                              ),
+                              itemBuilder: (context, index) {
+                                int currentIndex = 0;
+                                Items? currentItem;
+
+                                for (var product in homeController.products) {
+                                  if (currentIndex +
+                                          (product.items?.length ?? 0) >
+                                      index) {
+                                    currentItem =
+                                        product.items![index - currentIndex];
+                                    break;
+                                  }
+                                  currentIndex += product.items?.length ?? 0;
+                                }
+
+                                return Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      Get.to(() => MenuScreenView(
+                                            image: currentItem?.image ?? '',
+                                            name: currentItem?.name ?? '',
+                                            desc:
+                                                currentItem?.description ?? '',
+                                            price: (currentItem?.price ?? 0)
+                                                .toDouble(),
+                                          ));
+                                    },
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                        border: Border.all(
+                                            color: Colors.deepPurpleAccent),
+                                        color: const Color.fromARGB(
+                                            255, 31, 7, 71),
+                                        borderRadius: BorderRadius.circular(12),
+                                      ),
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          if (currentItem != null)
+                                            ClipRRect(
+                                              borderRadius:
+                                                  BorderRadius.circular(12),
+                                              child: Image.network(
+                                                currentItem.image ?? '',
+                                                height: 130,
+                                                width: double.infinity,
+                                                fit: BoxFit.cover,
+                                                errorBuilder: (context, error,
+                                                    stackTrace) {
+                                                  return const Center(
+                                                      child: Icon(Icons.error,
+                                                          color: Colors.red));
+                                                },
+                                              ),
+                                            ),
+                                          Padding(
+                                            padding: const EdgeInsets.all(8.0),
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                CustomText(
+                                                  text: currentItem?.name ??
+                                                      'Unknown',
+                                                  color: Colors.white,
+                                                  weight: FontWeight.bold,
+                                                  fontSize: 19,
+                                                ),
+                                                CustomText(
+                                                  text:
+                                                      'Rs: ${currentItem?.price ?? '0'}',
+                                                  color: Colors.white54,
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ],
                                       ),
                                     ),
-                                  Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        CustomText(
-                                          text: currentItem?.name ?? 'Unknown',
-                                          color: Colors.white,
-                                          weight: FontWeight.bold,
-                                          fontSize: 19,
-                                        ),
-                                        CustomText(
-                                          text:
-                                              'Rs: ${currentItem?.price ?? '0'}',
-                                          color: Colors.white54,
-                                        ),
-                                      ],
-                                    ),
                                   ),
-                                ],
-                              ),
-                            ),
-                          );
-                        },
-                      );
-                    }
-                  }),
+                                );
+                              },
+                            );
+                          }
+                        });
+                      }
+                    },
+                  ),
                   const SizedBox(height: 10),
                 ],
               ),
