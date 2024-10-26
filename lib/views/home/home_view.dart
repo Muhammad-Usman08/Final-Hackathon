@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hackhthon_project/components/custom_text.dart';
+import 'package:hackhthon_project/views/home/categories_list.dart';
 import 'package:hackhthon_project/views/home/homecomponents/custom_app_bar.dart';
 import 'package:hackhthon_project/views/home/homeview_model.dart';
 import 'package:hackhthon_project/views/home/product_model.dart';
@@ -17,7 +18,7 @@ class HomeView extends StatelessWidget {
     return Scaffold(
       body: SizedBox.expand(
         child: Container(
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             gradient: LinearGradient(
               colors: [Colors.black, Color(0xff151232), Color(0xff392776)],
               begin: Alignment.topRight,
@@ -30,9 +31,9 @@ class HomeView extends StatelessWidget {
               // Wrap entire content in a SingleChildScrollView
               child: Column(
                 children: [
-                  CustomAppBar(),
+                  const CustomAppBar(),
                   GradientTextField(),
-                  Padding(
+                  const Padding(
                     padding: EdgeInsets.symmetric(horizontal: 30, vertical: 15),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -53,9 +54,10 @@ class HomeView extends StatelessWidget {
                   SizedBox(
                     height: 150,
                     child: ListView.builder(
-                      itemCount: 6,
+                      itemCount: categories.length,
                       scrollDirection: Axis.horizontal,
                       itemBuilder: (context, index) {
+                        final data = categories[index];
                         return Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 15),
                           child: Column(
@@ -69,14 +71,11 @@ class HomeView extends StatelessWidget {
                                   color: const Color.fromARGB(255, 31, 7, 71),
                                   borderRadius: BorderRadius.circular(10),
                                 ),
-                                child: Icon(
-                                  Icons.food_bank,
-                                  color: Colors.white,
-                                ),
+                                child: Image.asset('${data['image']}'),
                               ),
-                              SizedBox(height: 8),
-                              CustomText(
-                                text: 'Burger',
+                              const SizedBox(height: 8),
+                               CustomText(
+                                text: data['name'],
                                 color: Colors.white,
                                 weight: FontWeight.bold,
                                 fontSize: 20,
@@ -89,16 +88,19 @@ class HomeView extends StatelessWidget {
                   ),
                   Obx(() {
                     if (homeController.products.isEmpty) {
-                      return Center(child: CircularProgressIndicator());
+                      return const Center(
+                          child: CircularProgressIndicator(
+                        color: Colors.white,
+                      ));
                     } else {
                       return GridView.builder(
                         physics:
-                            NeverScrollableScrollPhysics(), // Disable scrolling for the GridView
+                            const NeverScrollableScrollPhysics(),
                         shrinkWrap:
-                            true, // Allow the GridView to take only the needed space
-                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 2, // Number of columns
-                          childAspectRatio: 0.75, // Aspect ratio of each item
+                            true,
+                        gridDelegate:const SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 2,
+                          childAspectRatio: 0.70, // Aspect ratio of each item
                           crossAxisSpacing: 10.0,
                           mainAxisSpacing: 10.0,
                         ),
@@ -142,7 +144,7 @@ class HomeView extends StatelessWidget {
                                         fit: BoxFit.cover,
                                         errorBuilder:
                                             (context, error, stackTrace) {
-                                          return Center(
+                                          return const Center(
                                               child: Icon(Icons.error,
                                                   color: Colors.red));
                                         },
@@ -158,7 +160,7 @@ class HomeView extends StatelessWidget {
                                           text: currentItem?.name ?? 'Unknown',
                                           color: Colors.white,
                                           weight: FontWeight.bold,
-                                          fontSize: 25,
+                                          fontSize: 19,
                                         ),
                                         CustomText(
                                           text:
@@ -176,7 +178,7 @@ class HomeView extends StatelessWidget {
                       );
                     }
                   }),
-                  SizedBox(height: 10),
+                  const SizedBox(height: 10),
                 ],
               ),
             ),
@@ -195,7 +197,7 @@ class GradientTextField extends StatelessWidget {
       child: Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(15),
-          gradient: LinearGradient(
+          gradient: const LinearGradient(
             colors: [
               Color(0xff151232),
               Color(0xff392776),
@@ -206,10 +208,10 @@ class GradientTextField extends StatelessWidget {
         ),
         child: TextField(
           decoration: InputDecoration(
-            prefixIcon: Icon(Icons.search, color: Colors.white),
+            prefixIcon: const Icon(Icons.search, color: Colors.white),
             hintText: 'Your Order?',
-            hintStyle: TextStyle(color: Colors.white38),
-            suffixIcon: Icon(Icons.qr_code, color: Colors.white),
+            hintStyle: const TextStyle(color: Colors.white38),
+            suffixIcon: const Icon(Icons.qr_code, color: Colors.white),
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(15),
               borderSide: BorderSide.none,
@@ -220,15 +222,15 @@ class GradientTextField extends StatelessWidget {
             ),
             errorBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(15),
-              borderSide: BorderSide(color: Colors.teal),
+              borderSide: const BorderSide(color: Colors.teal),
             ),
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(15),
               borderSide: BorderSide.none,
             ),
-            contentPadding: EdgeInsets.symmetric(vertical: 15),
+            contentPadding: const EdgeInsets.symmetric(vertical: 15),
           ),
-          style: TextStyle(color: Colors.white),
+          style: const TextStyle(color: Colors.white),
         ),
       ),
     );

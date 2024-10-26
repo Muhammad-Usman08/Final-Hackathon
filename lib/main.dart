@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hackhthon_project/firebase_options.dart';
 import 'package:hackhthon_project/views/authentication/signUp/signUp_view.dart';
+import 'package:hackhthon_project/views/home/home_view.dart';
 import 'package:hackhthon_project/views/menu_screen/menu_screen_view.dart';
 import 'package:hackhthon_project/views/resturantsview/resturant_view.dart';
 
@@ -20,7 +21,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
-      home: MenuScreenView(),
+      home: HomeView(),
       debugShowCheckedModeBanner: false,
     );
   }
