@@ -4,7 +4,10 @@ import 'package:get/get.dart';
 import 'package:hackhthon_project/components/common_button.dart';
 import 'package:hackhthon_project/components/custom_text.dart';
 import 'package:hackhthon_project/utils/constants.dart';
+import 'package:hackhthon_project/views/menu_screen/cart_model.dart';
 import 'package:hackhthon_project/views/menu_screen/menu_screen_viewmodel.dart';
+import 'package:hackhthon_project/views/order_detail/order_detail_view.dart';
+import 'package:hackhthon_project/views/order_detail/order_detail_viewmodel.dart';
 
 class MenuScreenView extends StatelessWidget {
   final String image;
@@ -19,6 +22,8 @@ class MenuScreenView extends StatelessWidget {
       required this.price});
 
   final controller = Get.put(MenuScreenViewmodel());
+  final controller1 = Get.put(CartController());
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -147,6 +152,15 @@ class MenuScreenView extends StatelessWidget {
       bottomNavigationBar: BottomAppBar(
         color: Colors.black,
         child: CommonButton(
+          onPressed: () {
+            controller1.addItem(CartItem(
+              price: price,
+              image: image,
+              name: name,
+            ));
+            Get.snackbar("Success", "$name added to cart");
+            Get.to(OrderDetailView());
+          },
           title: 'Add to Basket',
         ),
       ),
