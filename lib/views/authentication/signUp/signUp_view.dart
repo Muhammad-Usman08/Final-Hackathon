@@ -1,21 +1,35 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:hackhthon_project/views/authentication/auth_controller.dart';
 import 'package:hackhthon_project/views/authentication/login/login_view.dart';
 
 class SignupView extends StatelessWidget {
+  final TextEditingController nameController = TextEditingController();
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passController = TextEditingController();
+
+  final FocusNode nameFocusNode = FocusNode();
+  final FocusNode emailFocusNode = FocusNode();
+  final FocusNode passFocusNode = FocusNode();
+
   @override
   Widget build(BuildContext context) {
+    final controller = Get.put(AuthController());
+
     return Scaffold(
-      body: Container(
+      body: GestureDetector(
+        onTap: () {
+          nameFocusNode.unfocus();
+          emailFocusNode.unfocus();
+          passFocusNode.unfocus();
+        },
         child: Stack(
           children: [
-            Container(
-              child: Image.asset(
-                "assets/images/bgimage.png",
-                width: double.infinity,
-                height: double.infinity,
-                fit: BoxFit.cover,
-              ),
+            Image.asset(
+              "assets/images/bgimage.png",
+              width: double.infinity,
+              height: double.infinity,
+              fit: BoxFit.cover,
             ),
             Positioned(
               top: 65,
@@ -51,7 +65,7 @@ class SignupView extends StatelessWidget {
                   Container(
                     padding: const EdgeInsets.all(20),
                     decoration: BoxDecoration(
-                      color: Color(0xff1d102d),
+                      color: const Color(0xff1d102d),
                       borderRadius: BorderRadius.circular(15),
                     ),
                     child: Column(
@@ -65,9 +79,12 @@ class SignupView extends StatelessWidget {
                         ),
                         const SizedBox(height: 20),
                         TextField(
+                          controller: nameController,
+                          focusNode: nameFocusNode,
+                          style: TextStyle(color: Colors.white),
                           decoration: InputDecoration(
                             hintText: "Enter Your Name",
-                            hintStyle: TextStyle(color: Colors.white),
+                            hintStyle: TextStyle(color: Colors.white54),
                             prefixIcon: Icon(
                               Icons.person,
                               color: Colors.white,
@@ -79,9 +96,12 @@ class SignupView extends StatelessWidget {
                         ),
                         const SizedBox(height: 20),
                         TextField(
+                          controller: emailController,
+                          focusNode: emailFocusNode,
+                          style: TextStyle(color: Colors.white),
                           decoration: InputDecoration(
                             hintText: "abc@gmail.com",
-                            hintStyle: TextStyle(color: Colors.white),
+                            hintStyle: TextStyle(color: Colors.white54),
                             prefixIcon: Icon(
                               Icons.email,
                               color: Colors.white,
@@ -93,10 +113,13 @@ class SignupView extends StatelessWidget {
                         ),
                         const SizedBox(height: 20),
                         TextField(
+                          controller: passController,
+                          focusNode: passFocusNode,
                           obscureText: true,
+                          style: TextStyle(color: Colors.white),
                           decoration: InputDecoration(
-                            hintText: "Pasword",
-                            hintStyle: TextStyle(color: Colors.white),
+                            hintText: "Password",
+                            hintStyle: TextStyle(color: Colors.white54),
                             prefixIcon: Icon(
                               Icons.lock,
                               color: Colors.white,
@@ -107,54 +130,41 @@ class SignupView extends StatelessWidget {
                           ),
                         ),
                         const SizedBox(height: 20),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            Text(
-                              "Forget Password?",
-                              style: TextStyle(color: Colors.white),
-                            )
-                          ],
-                        ),
-                        const SizedBox(height: 20),
                         Container(
                           decoration: BoxDecoration(
                             gradient: LinearGradient(
-                                colors: [
-                                  Colors.blue,
-                                  const Color.fromARGB(255, 38, 13, 139),
-                                  Colors.blue,
-                                ], // Gradient colors
-                                begin: Alignment.topCenter,
-                                end: Alignment.bottomCenter),
-                            borderRadius:
-                                BorderRadius.circular(8), // Rounded corners
+                              colors: [
+                                Colors.blue,
+                                const Color.fromARGB(255, 38, 13, 139),
+                                Colors.blue,
+                              ],
+                              begin: Alignment.topCenter,
+                              end: Alignment.bottomCenter,
+                            ),
+                            borderRadius: BorderRadius.circular(8),
                           ),
                           child: ElevatedButton(
                             onPressed: () {
-                              Get.to(LoginView());
-                              // Button action
+                              controller.signUp(
+                                  emailController.text, passController.text);
                             },
                             style: ElevatedButton.styleFrom(
-                              minimumSize: Size(480, 50),
                               backgroundColor:
                                   const Color.fromARGB(4, 5, 15, 0),
                               shadowColor: const Color.fromARGB(15, 85, 232, 1),
+                              minimumSize: Size(480, 50),
                             ),
                             child: Text(
                               'Create Account',
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 16), // Text style
+                              style:
+                                  TextStyle(color: Colors.white, fontSize: 16),
                             ),
                           ),
                         ),
                       ],
                     ),
                   ),
-                  SizedBox(
-                    height: 17,
-                  ),
+                  SizedBox(height: 17),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -164,15 +174,13 @@ class SignupView extends StatelessWidget {
                       )
                     ],
                   ),
-                  SizedBox(
-                    height: 5,
-                  ),
+                  SizedBox(height: 5),
                   InkWell(
                     onTap: () {
-                     Get.to(()=>LoginView());
+                      Get.to(LoginView());
                     },
                     child: const Text(
-                      "Signup",
+                      "Login",
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         color: Colors.white,
