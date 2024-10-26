@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:hackhthon_project/components/custom_text.dart';
 import 'package:hackhthon_project/views/resturantsview/resturantcopmponent/my_switch.dart';
 
@@ -13,7 +14,7 @@ class ResturantView extends StatelessWidget {
         body: Stack(
           children: [
             Container(
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 gradient: LinearGradient(
                   colors: [Colors.black, Color(0xff151232), Color(0xff392776)],
                   begin: Alignment.topRight,
@@ -66,8 +67,8 @@ class ResturantView extends StatelessWidget {
                                             CrossAxisAlignment.start,
                                         children: [
                                           Container(
-                                            height: 60,
-                                            width: 60,
+                                            height: 50,
+                                            width: 50,
                                             decoration: BoxDecoration(
                                               border: Border.all(
                                                   color: Colors.white30),
@@ -95,7 +96,8 @@ class ResturantView extends StatelessWidget {
                                                   CustomText(
                                                     text:
                                                         '2972 Westheimer Rd. Santa Ana',
-                                                    color: Colors.white,
+                                                    color: Colors.grey,
+                                                    fontSize: 13,
                                                   ),
                                                   Icon(Icons.arrow_forward_ios,
                                                       color: Colors.white),
@@ -108,29 +110,25 @@ class ResturantView extends StatelessWidget {
                                     ),
                                     Container(
                                       width: double.infinity,
-                                      height: 80,
+                                      height: 85,
                                       decoration: BoxDecoration(
                                         boxShadow: [
                                           BoxShadow(
                                             color: const Color.fromARGB(
                                                     255, 29, 5, 71)
-                                                .withOpacity(
-                                                    0.5), // Color with opacity
-                                            offset: Offset(0,
-                                                -2), // Negative offset to move shadow upwards
-                                            blurRadius:
-                                                8, // Blur for a softer edge
-                                            spreadRadius:
-                                                25, // Spread radius for shadow above
+                                                .withOpacity(0.5),
+                                            offset: const Offset(0, -2),
+                                            blurRadius: 8,
+                                            spreadRadius: 25,
                                           ),
                                         ],
-                                        borderRadius: BorderRadius.only(
+                                        borderRadius: const BorderRadius.only(
                                             bottomLeft: Radius.circular(12),
                                             bottomRight: Radius.circular(12)),
                                         color: const Color.fromARGB(
                                             255, 29, 5, 71),
                                       ),
-                                      child: Row(
+                                      child: const Row(
                                         mainAxisAlignment:
                                             MainAxisAlignment.spaceBetween,
                                         children: [
@@ -189,13 +187,18 @@ class ResturantView extends StatelessWidget {
                       ),
                     ],
                   ),
-                  SizedBox(height: 100),
+                  const SizedBox(height: 100),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
                       MySwitch(),
                       Container(
-                        child: Row(
+                        width: 150,
+                        height: 60,
+                        decoration: BoxDecoration(
+                            color: Color(0xff151232),
+                            borderRadius: BorderRadius.circular(12)),
+                        child: const Row(
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
                             Icon(
@@ -205,15 +208,10 @@ class ResturantView extends StatelessWidget {
                             CustomText(
                               text: 'Group Order',
                               color: Colors.white,
-                              fontSize: 18,
+                              fontSize: 16,
                             )
                           ],
                         ),
-                        width: 160,
-                        height: 60,
-                        decoration: BoxDecoration(
-                            color: Color(0xff151232),
-                            borderRadius: BorderRadius.circular(12)),
                       ),
                     ],
                   ),
@@ -227,7 +225,7 @@ class ResturantView extends StatelessWidget {
                           // Handle search action
                         },
                       ),
-                      Expanded(
+                      const Expanded(
                         child: TabBar(
                           labelColor: Colors.white,
                           unselectedLabelColor: Colors.white54,
@@ -241,13 +239,13 @@ class ResturantView extends StatelessWidget {
                       ),
                     ],
                   ),
-                  SizedBox(height: 10), // Add some spacing
                   SizedBox(
                     height: 500, // You can adjust the height as needed
                     child: TabBarView(
                       children: [
                         Padding(
-                          padding: const EdgeInsets.all(25.0),
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 25.0, horizontal: 15),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
@@ -256,9 +254,6 @@ class ResturantView extends StatelessWidget {
                                 color: Colors.white,
                                 weight: FontWeight.bold,
                                 fontSize: 20,
-                              ),
-                              SizedBox(
-                                height: 10,
                               ),
                               SizedBox(
                                 height: 400,
@@ -292,7 +287,7 @@ class ResturantView extends StatelessWidget {
                                                   children: [
                                                     CustomText(
                                                       text: 'Udon Miso',
-                                                      fontSize: 18,
+                                                      fontSize: 15,
                                                       color: Colors.white,
                                                       weight: FontWeight.bold,
                                                     ),
@@ -303,23 +298,45 @@ class ResturantView extends StatelessWidget {
                                                       text:
                                                           'Thick handmade udon\nnoodles in a rich miso broth,',
                                                       color: Colors.white54,
-                                                      fontSize: 14,
+                                                      fontSize: 12,
                                                     ),
                                                     SizedBox(
                                                       height: 5,
                                                     ),
                                                     CustomText(
                                                       text: '\$ 16.00',
-                                                      fontSize: 18,
+                                                      fontSize: 15,
                                                       color: Colors.white,
                                                       weight: FontWeight.bold,
                                                     ),
                                                   ],
                                                 ),
-                                                Image.asset(
-                                                  'assets/images/featured.png',
-                                                  height: 120,
-                                                )
+                                                Stack(children: [
+                                                  Image.asset(
+                                                    'assets/images/chinese-pasta.png',
+                                                    height: 120,
+                                                  ),
+                                                  Positioned(
+                                                    right: 5,
+                                                    bottom: 0,
+                                                    child: Container(
+                                                      width: 30,
+                                                      height: 25,
+                                                      padding: EdgeInsets.all(1),
+                                                      decoration: BoxDecoration(
+                                                        color: Color(0xff392776),
+                                                        borderRadius:
+                                                            BorderRadius.circular(
+                                                                10),
+                                                      ),
+                                                      child:const Icon(
+                                                        Icons.add,
+                                                        size: 15,
+                                                        color: Colors.white,
+                                                      ),
+                                                    ),
+                                                  )
+                                                ])
                                               ],
                                             ),
                                           ),
@@ -356,15 +373,20 @@ class ResAppBar extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           // Back button
-          Container(
-            height: 50,
-            width: 60,
-            child: Center(
-              child: Icon(Icons.arrow_back_ios, color: Colors.white),
-            ),
-            decoration: BoxDecoration(
-              border: Border.all(color: Colors.white10),
-              borderRadius: BorderRadius.circular(8),
+          InkWell(
+            onTap: (){
+              Get.back();
+            },
+            child: Container(
+              height: 50,
+              width: 60,
+              decoration: BoxDecoration(
+                border: Border.all(color: Colors.white10),
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child:const Center(
+                child: Icon(Icons.arrow_back_ios, color: Colors.white),
+              ),
             ),
           ),
           // Icons for Favorite and More
@@ -373,25 +395,27 @@ class ResAppBar extends StatelessWidget {
               Container(
                 height: 50,
                 width: 60,
-                child: Center(
-                  child: Icon(Icons.favorite, color: Colors.white),
-                ),
-                decoration: BoxDecoration(
+                 decoration: BoxDecoration(
                   border: Border.all(color: Colors.white10),
                   borderRadius: BorderRadius.circular(8),
                 ),
+                child:const Center(
+                  child: Icon(Icons.favorite, color: Colors.white),
+                ),
+               
               ),
-              SizedBox(width: 10), // Space between icons
+            const  SizedBox(width: 10), // Space between icons
               Container(
                 height: 50,
                 width: 60,
-                child: Center(
-                  child: Icon(Icons.more_horiz, color: Colors.white),
-                ),
-                decoration: BoxDecoration(
+                 decoration: BoxDecoration(
                   border: Border.all(color: Colors.white10),
                   borderRadius: BorderRadius.circular(8),
                 ),
+                child:const Center(
+                  child: Icon(Icons.more_horiz, color: Colors.white),
+                ),
+               
               ),
             ],
           ),

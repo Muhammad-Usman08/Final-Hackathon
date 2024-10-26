@@ -5,6 +5,7 @@ import 'package:hackhthon_project/views/home/categories_list.dart';
 import 'package:hackhthon_project/views/home/homecomponents/custom_app_bar.dart';
 import 'package:hackhthon_project/views/home/homeview_model.dart';
 import 'package:hackhthon_project/views/home/product_model.dart';
+import 'package:hackhthon_project/views/resturantsview/resturant_view.dart';
 
 class HomeView extends StatelessWidget {
   const HomeView({super.key});
@@ -58,29 +59,34 @@ class HomeView extends StatelessWidget {
                       scrollDirection: Axis.horizontal,
                       itemBuilder: (context, index) {
                         final data = categories[index];
-                        return Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 15),
-                          child: Column(
-                            children: [
-                              Container(
-                                height: 90,
-                                width: 80,
-                                decoration: BoxDecoration(
-                                  border: Border.all(
-                                      color: Colors.deepPurpleAccent),
-                                  color: const Color.fromARGB(255, 31, 7, 71),
-                                  borderRadius: BorderRadius.circular(10),
+                        return GestureDetector(
+                          onTap: (){
+                            Get.to(ResturantView());
+                          },
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 15),
+                            child: Column(
+                              children: [
+                                Container(
+                                  height: 90,
+                                  width: 80,
+                                  decoration: BoxDecoration(
+                                    border: Border.all(
+                                        color: Colors.deepPurpleAccent),
+                                    color: const Color.fromARGB(255, 31, 7, 71),
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                  child: Image.asset('${data['image']}'),
                                 ),
-                                child: Image.asset('${data['image']}'),
-                              ),
-                              const SizedBox(height: 8),
-                               CustomText(
-                                text: data['name'],
-                                color: Colors.white,
-                                weight: FontWeight.bold,
-                                fontSize: 20,
-                              ),
-                            ],
+                                const SizedBox(height: 8),
+                                 CustomText(
+                                  text: data['name'],
+                                  color: Colors.white,
+                                  weight: FontWeight.bold,
+                                  fontSize: 18,
+                                ),
+                              ],
+                            ),
                           ),
                         );
                       },
