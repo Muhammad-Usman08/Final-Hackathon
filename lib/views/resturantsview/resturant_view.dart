@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hackhthon_project/components/custom_text.dart';
+import 'package:hackhthon_project/views/home/product_model.dart';
 import 'package:hackhthon_project/views/resturantsview/resturantcopmponent/my_switch.dart';
 
 class ResturantView extends StatelessWidget {
-  const ResturantView({super.key});
+  final Map restaurantData;
+  final productModel categoryData;
+  const ResturantView(
+      {super.key, required this.restaurantData, required this.categoryData});
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +37,7 @@ class ResturantView extends StatelessWidget {
                         height: 300,
                         width: double.infinity,
                         child: Image.asset(
-                          'assets/images/resturant_dish.png',
+                          restaurantData['image'],
                           fit: BoxFit.cover,
                         ),
                       ),
@@ -86,7 +90,9 @@ class ResturantView extends StatelessWidget {
                                                 CrossAxisAlignment.start,
                                             children: [
                                               CustomText(
-                                                text: 'Kinka Izakaya',
+                                                text: restaurantData[
+                                                        'restaurantName'] ??
+                                                    '',
                                                 weight: FontWeight.bold,
                                                 fontSize: 20,
                                                 color: Colors.white,
@@ -94,8 +100,9 @@ class ResturantView extends StatelessWidget {
                                               Row(
                                                 children: [
                                                   CustomText(
-                                                    text:
-                                                        '2972 Westheimer Rd. Santa Ana',
+                                                    text: restaurantData[
+                                                            'restaurantAddress'] ??
+                                                        '',
                                                     color: Colors.grey,
                                                     fontSize: 13,
                                                   ),
@@ -128,21 +135,22 @@ class ResturantView extends StatelessWidget {
                                         color: const Color.fromARGB(
                                             255, 29, 5, 71),
                                       ),
-                                      child: const Row(
+                                      child: Row(
                                         mainAxisAlignment:
                                             MainAxisAlignment.spaceBetween,
                                         children: [
-                                          SizedBox(width: 20),
+                                          const SizedBox(width: 20),
                                           Expanded(
                                             child: Column(
                                               crossAxisAlignment:
                                                   CrossAxisAlignment.start,
                                               children: [
-                                                CustomText(
+                                                const CustomText(
                                                     text: 'Delivery fee',
                                                     color: Colors.white30),
                                                 CustomText(
-                                                    text: '\$3.99',
+                                                    text:
+                                                        '\$ ${restaurantData['deliveryFee']}',
                                                     color: Colors.white),
                                               ],
                                             ),
@@ -152,11 +160,12 @@ class ResturantView extends StatelessWidget {
                                               crossAxisAlignment:
                                                   CrossAxisAlignment.start,
                                               children: [
-                                                CustomText(
+                                                const CustomText(
                                                     text: 'Service fee',
                                                     color: Colors.white30),
                                                 CustomText(
-                                                    text: '\$2.50',
+                                                    text:
+                                                        '\$ ${restaurantData['serviceFee']}',
                                                     color: Colors.white),
                                               ],
                                             ),
@@ -166,11 +175,12 @@ class ResturantView extends StatelessWidget {
                                               crossAxisAlignment:
                                                   CrossAxisAlignment.start,
                                               children: [
-                                                CustomText(
+                                                const CustomText(
                                                     text: 'Total fee',
                                                     color: Colors.white30),
                                                 CustomText(
-                                                    text: '\$6.49',
+                                                    text:
+                                                        '\$ ${restaurantData['totalFee']}',
                                                     color: Colors.white),
                                               ],
                                             ),
@@ -256,93 +266,171 @@ class ResturantView extends StatelessWidget {
                                 fontSize: 20,
                               ),
                               SizedBox(
-                                height: 400,
+                                height: MediaQuery.of(context).size.height *
+                                    0.5, // Adjust height responsively
                                 child: ListView.builder(
-                                    itemCount: 3,
-                                    itemBuilder: (context, index) {
-                                      return Padding(
-                                        padding:
-                                            const EdgeInsets.only(bottom: 8),
-                                        child: Container(
-                                          height: 160,
-                                          width: double.infinity,
-                                          decoration: BoxDecoration(
-                                            border: Border.all(
-                                              color: Colors.deepPurple,
-                                            ),
-                                            color: Color(0xff151232),
-                                            borderRadius:
-                                                BorderRadius.circular(12),
+                                  itemCount: categoryData.items != null
+                                      ? categoryData.items!.length
+                                      : 0,
+                                  itemBuilder: (context, index) {
+                                    final data = categoryData.items![index];
+                                    return Padding(
+                                      padding: const EdgeInsets.only(bottom: 8),
+                                      child: Container(
+                                        height: MediaQuery.of(context)
+                                                .size
+                                                .height *
+                                            0.2, // Adjust height responsively
+                                        width: MediaQuery.of(context)
+                                                .size
+                                                .width *
+                                            0.9, // Make the width responsive
+                                        decoration: BoxDecoration(
+                                          border: Border.all(
+                                            color: Colors.deepPurple,
                                           ),
-                                          child: Padding(
-                                            padding: const EdgeInsets.all(25.0),
-                                            child: Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              children: [
-                                                Column(
+                                          color: Color(0xff151232),
+                                          borderRadius:
+                                              BorderRadius.circular(12),
+                                        ),
+                                        child: Padding(
+                                          padding: EdgeInsets.all(
+                                              MediaQuery.of(context)
+                                                      .size
+                                                      .width *
+                                                  0.05), // Responsive padding
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              ConstrainedBox(
+                                                constraints: BoxConstraints(
+                                                  maxWidth: MediaQuery.of(
+                                                              context)
+                                                          .size
+                                                          .width *
+                                                      0.4, // Limit width to half of container
+                                                ),
+                                                child: Column(
                                                   crossAxisAlignment:
                                                       CrossAxisAlignment.start,
                                                   children: [
                                                     CustomText(
-                                                      text: 'Udon Miso',
-                                                      fontSize: 15,
+                                                      text: data.name ?? '',
+                                                      fontSize: MediaQuery.of(
+                                                                  context)
+                                                              .size
+                                                              .width *
+                                                          0.04, // Responsive font size
                                                       color: Colors.white,
                                                       weight: FontWeight.bold,
                                                     ),
                                                     SizedBox(
-                                                      height: 5,
-                                                    ),
+                                                        height: MediaQuery.of(
+                                                                    context)
+                                                                .size
+                                                                .height *
+                                                            0.005),
                                                     CustomText(
-                                                      text:
-                                                          'Thick handmade udon\nnoodles in a rich miso broth,',
+                                                      text: data.description ??
+                                                          '',
                                                       color: Colors.white54,
-                                                      fontSize: 12,
+                                                      fontSize:
+                                                          MediaQuery.of(context)
+                                                                  .size
+                                                                  .width *
+                                                              0.03,
+                                                      textOverflow:
+                                                          TextOverflow.clip,
                                                     ),
                                                     SizedBox(
-                                                      height: 5,
-                                                    ),
+                                                        height: MediaQuery.of(
+                                                                    context)
+                                                                .size
+                                                                .height *
+                                                            0.005),
                                                     CustomText(
-                                                      text: '\$ 16.00',
-                                                      fontSize: 15,
+                                                      text:
+                                                          data.price.toString(),
+                                                      fontSize: MediaQuery.of(
+                                                                  context)
+                                                              .size
+                                                              .width *
+                                                          0.04, // Responsive font size
                                                       color: Colors.white,
                                                       weight: FontWeight.bold,
                                                     ),
                                                   ],
                                                 ),
-                                                Stack(children: [
-                                                  Image.asset(
-                                                    'assets/images/chinese-pasta.png',
-                                                    height: 120,
+                                              ),
+                                              Stack(
+                                                children: [
+                                                  Container(
+                                                    height: MediaQuery.of(
+                                                                context)
+                                                            .size
+                                                            .height *
+                                                        0.13, // Fixed container height
+                                                    width: MediaQuery.of(
+                                                                context)
+                                                            .size
+                                                            .width *
+                                                        0.28, // Fixed container width
+                                                    decoration: BoxDecoration(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              8),        
+                                                    ),
+                                                    child: ClipRRect(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              8), // Round corners for image if needed
+                                                      child: Image.network(
+                                                        data.image ?? '',
+                                                        fit: BoxFit
+                                                            .cover, // Makes image cover entire container
+                                                      ),
+                                                    ),
                                                   ),
                                                   Positioned(
-                                                    right: 5,
+                                                    right: 0,
                                                     bottom: 0,
                                                     child: Container(
-                                                      width: 30,
-                                                      height: 25,
-                                                      padding: EdgeInsets.all(1),
+                                                      width: MediaQuery.of(
+                                                                  context)
+                                                              .size
+                                                              .width *
+                                                          0.08,
+                                                      height: MediaQuery.of(
+                                                                  context)
+                                                              .size
+                                                              .height *
+                                                          0.04,
+                                                      padding:
+                                                          EdgeInsets.all(1),
                                                       decoration: BoxDecoration(
-                                                        color: Color(0xff392776),
+                                                        color:
+                                                            Color(0xff392776),
                                                         borderRadius:
-                                                            BorderRadius.circular(
-                                                                10),
+                                                            BorderRadius
+                                                                .circular(5),
                                                       ),
-                                                      child:const Icon(
+                                                      child: const Icon(
                                                         Icons.add,
                                                         size: 15,
                                                         color: Colors.white,
                                                       ),
                                                     ),
-                                                  )
-                                                ])
-                                              ],
-                                            ),
+                                                  ),
+                                                ],
+                                              )
+                                            ],
                                           ),
                                         ),
-                                      );
-                                    }),
+                                      ),
+                                    );
+                                  },
+                                ),
                               )
                             ],
                           ),
@@ -374,7 +462,7 @@ class ResAppBar extends StatelessWidget {
         children: [
           // Back button
           InkWell(
-            onTap: (){
+            onTap: () {
               Get.back();
             },
             child: Container(
@@ -384,7 +472,7 @@ class ResAppBar extends StatelessWidget {
                 border: Border.all(color: Colors.white10),
                 borderRadius: BorderRadius.circular(8),
               ),
-              child:const Center(
+              child: const Center(
                 child: Icon(Icons.arrow_back_ios, color: Colors.white),
               ),
             ),
@@ -395,27 +483,25 @@ class ResAppBar extends StatelessWidget {
               Container(
                 height: 50,
                 width: 60,
-                 decoration: BoxDecoration(
+                decoration: BoxDecoration(
                   border: Border.all(color: Colors.white10),
                   borderRadius: BorderRadius.circular(8),
                 ),
-                child:const Center(
+                child: const Center(
                   child: Icon(Icons.favorite, color: Colors.white),
                 ),
-               
               ),
-            const  SizedBox(width: 10), // Space between icons
+              const SizedBox(width: 10), // Space between icons
               Container(
                 height: 50,
                 width: 60,
-                 decoration: BoxDecoration(
+                decoration: BoxDecoration(
                   border: Border.all(color: Colors.white10),
                   borderRadius: BorderRadius.circular(8),
                 ),
-                child:const Center(
+                child: const Center(
                   child: Icon(Icons.more_horiz, color: Colors.white),
                 ),
-               
               ),
             ],
           ),

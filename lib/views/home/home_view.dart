@@ -61,7 +61,7 @@ class HomeView extends StatelessWidget {
                         final data = categories[index];
                         return GestureDetector(
                           onTap: (){
-                            Get.to(ResturantView());
+                            Get.to(ResturantView(restaurantData: categories[index],categoryData: homeController.products[index],));
                           },
                           child: Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 15),
@@ -76,7 +76,7 @@ class HomeView extends StatelessWidget {
                                     color: const Color.fromARGB(255, 31, 7, 71),
                                     borderRadius: BorderRadius.circular(10),
                                   ),
-                                  child: Image.asset('${data['image']}'),
+                                  child: Image.asset('${data['icon']}'),
                                 ),
                                 const SizedBox(height: 8),
                                  CustomText(
