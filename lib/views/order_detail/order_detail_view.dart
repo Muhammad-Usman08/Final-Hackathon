@@ -7,7 +7,8 @@ import 'package:hackhthon_project/utils/constants.dart';
 import 'package:hackhthon_project/views/order_detail/order_detail_viewmodel.dart'; // Ensure this is imported
 
 class OrderDetailView extends StatelessWidget {
-  const OrderDetailView({super.key});
+  final void Function()? onpressed;
+  const OrderDetailView({super.key, this.onpressed});
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +33,7 @@ class OrderDetailView extends StatelessWidget {
                 padding: const EdgeInsets.only(
                     left: screenPadding, top: screenPadding),
                 child: IconButton(
-                  onPressed: () => Get.back(),
+                  onPressed: onpressed,
                   icon: const Icon(Icons.arrow_back_ios, color: Colors.white),
                 ),
               ),
@@ -169,7 +170,7 @@ class OrderDetailView extends StatelessWidget {
                   borderRadius: BorderRadius.circular(40),
                 ),
                 padding:
-                    const EdgeInsets.symmetric(vertical: 25, horizontal: 30),
+                    const EdgeInsets.only(bottom: 90, left: 30, right: 30, top: 30),
                 child: Column(
                   children: [
                     paymentSummary(

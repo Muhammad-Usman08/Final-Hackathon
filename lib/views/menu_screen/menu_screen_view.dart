@@ -182,7 +182,7 @@ class MenuScreenView extends StatelessWidget {
             cartController.addItem(item,
                 initialQuantity: controller.quantity.value);
             controller.quantity.value = 1;
-            Get.to(OrderDetailView());
+            Get.to(OrderDetailView(onpressed: () => Get.back()));
           },
           title: 'Add to Basket',
         ),

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hackhthon_project/views/authentication/login/login_view.dart';
-import 'package:hackhthon_project/views/home/home_view.dart';
+import 'package:hackhthon_project/views/main_screen.dart';
 import 'auth_controller.dart';
 
 class AuthGate extends StatelessWidget {
@@ -13,7 +13,7 @@ class AuthGate extends StatelessWidget {
       if (_authController.user.value == null) {
         return LoginView();
       } else {
-        return HomeView();
+        return MainScreen();
       }
     });
   }
